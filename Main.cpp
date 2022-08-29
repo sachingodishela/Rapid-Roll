@@ -16,20 +16,20 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		}
 		glPolygonMode(GL_FRONT_AND_BACK, newMode);
 	}
-	double increment = 0.03;
-	if (key == GLFW_KEY_LEFT and action != 0) {
+	double increment = action * 0.01;
+	if (key == GLFW_KEY_LEFT) {
 		game->moveBallLeft(increment);
 	}
 
-	if (key == GLFW_KEY_RIGHT and action != 0) {
+	if (key == GLFW_KEY_RIGHT) {
 		game->moveBallRight(increment);
 	}
 
-	if (key == GLFW_KEY_UP and action != 0) {
+	if (key == GLFW_KEY_UP) {
 		game->moveBallUp(increment);
 	}
 
-	if (key == GLFW_KEY_DOWN and action != 0) {
+	if (key == GLFW_KEY_DOWN) {
 		game->moveBallDown(increment);
 	}
 }

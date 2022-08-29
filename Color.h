@@ -2,7 +2,7 @@
 
 enum colors
 {
-	WHITE, RED, BLUE, GREEN, YELLOW
+	WHITE, RED, BLUE, GREEN, YELLOW, BLACK
 };
 
 class Color {
@@ -14,6 +14,15 @@ public:
 		if (myColor == colors::RED) {
 			C[1] = 0.0;
 			C[2] = 0.0;
+		}
+		else if (myColor == colors::BLUE) {
+			C[0] = 0;
+			C[1] = 0;
+		}
+		else if (myColor == colors::BLACK) {
+			C[0] = 0;
+			C[1] = 0;
+			C[2] = 0;
 		}
 	}
 

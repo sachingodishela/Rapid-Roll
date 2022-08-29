@@ -12,19 +12,28 @@ void Ball::draw(unsigned int vao)
 void Ball::moveLeft(double distance = 0.5)
 {
 	this->position[0] -= distance;
+	if (this->position[0] < -1) this->position[0] += 2;
 }
 
 void Ball::moveRight(double distance = 0.5)
 {
 	this->position[0] += distance;
+	if (this->position[0] > 1) this->position[0] -= 2;
 }
 
 void Ball::moveUp(double distance)
 {
 	this->position[1] += distance;
+	if (this->position[1] > 1) this->position[1] -= 2;
 }
 
 void Ball::moveDown(double distance)
 {
 	this->position[1] -= distance;
+	if (this->position[1] < -1) this->position[1] += 2;
+}
+
+bool Ball::touches(double X, double Y)
+{
+	return true;
 }

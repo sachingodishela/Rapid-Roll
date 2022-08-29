@@ -13,11 +13,14 @@ public:
 		this->lives = 3;
 		this->position[0] = 0.0;
 		this->position[1] = 0.0;
-		this->velocity = 0;
-		this->acceleration = 0;
+		this->velocity[0] = 0.0;
+		this->velocity[1] = 0.0;
+		this->acceleration[0] = 0.0;
+		this->acceleration[1] = 0.0;
 		this->color = Color(ballColor);
 	}
 	void draw(unsigned int);
+	bool touches(double, double);
 	void moveLeft(double);
 	void moveRight(double);
 	void moveUp(double);
