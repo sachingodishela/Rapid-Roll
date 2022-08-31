@@ -1,9 +1,9 @@
 #include "Step.h"
 
-bool Step::touches(double X, double Y)
+bool Step::touches(double X, double Y, double radius)
 {
 	return this->position[1] - this->height / 2 <= Y and
-		this->position[1] + this->height / 2 >= Y and
+		this->position[1] + this->height / 2 >= Y - radius and
 		this->position[0] - this->width / 2 <= X and
 		this->position[0] + this->width / 2 >= X;
 }

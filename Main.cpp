@@ -3,6 +3,10 @@
 
 Game* game;
 
+void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
+	glViewport(0, 0, width, height);
+}
+
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
 	//std::cout << "key=" << key << ", action=" << action << std::endl;
 	if (action == GLFW_RELEASE and key == GLFW_KEY_W) {
@@ -16,21 +20,13 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		}
 		glPolygonMode(GL_FRONT_AND_BACK, newMode);
 	}
-	double increment = action * 0.01;
+	double increment = action * 0.02;
 	if (key == GLFW_KEY_LEFT) {
 		game->moveBallLeft(increment);
 	}
 
 	if (key == GLFW_KEY_RIGHT) {
 		game->moveBallRight(increment);
-	}
-
-	if (key == GLFW_KEY_UP) {
-		game->moveBallUp(increment);
-	}
-
-	if (key == GLFW_KEY_DOWN) {
-		game->moveBallDown(increment);
 	}
 }
 int main()
@@ -51,7 +47,7 @@ int main()
 		return 0;
 	}
 	glViewport(0, 0, 400, 600);
-
+	glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
 	game = new Game();
 	glfwSetKeyCallback(window, key_callback);
 	game->init(window);

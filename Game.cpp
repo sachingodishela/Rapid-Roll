@@ -1,8 +1,18 @@
 #include "Game.h"
 #include <algorithm>
+#define PI 3.141
 
-double* ballVertexData = new double[7];
-double* stepsVertexData = new double[168];
+double* ballVertexData = new double[7 * (1 + 24)];
+double* stepsVertexData = new double[7 * 4 * 6];
+
+double getBallVerticalVelocity(Ball* ball, Step** steps)
+{
+	for (int i = 0; i < 6; i++)
+	{
+		if (steps[i]->touches(ball->position[0], ball->position[1], ball->radius)) return steps[i]->velocity[1];
+	}
+	return -0.05;
+}
 
 void updateStepVertexPositions(int vertexIndex, int startIndexInBuffer, Step* step)
 {
@@ -23,6 +33,25 @@ void updateStepVertexPositions(int vertexIndex, int startIndexInBuffer, Step* st
 		stepsVertexData[startIndexInBuffer + 2] = step->position[1] - (step->height / 2);
 	}
 }
+void initializeBallVertexCoordinates(int index, Ball* ball)
+{
+	if (index == 0)
+	{
+		ballVertexData[index + 1] = ball->position[0];
+		ballVertexData[index + 2] = ball->position[1];
+	}
+	else
+	{
+		double theta = (index / 7 - 1) * 2 * PI / 23;
+		ballVertexData[index + 1] = ball->position[0] + ball->radius * cos(theta);
+		ballVertexData[index + 2] = ball->position[1] + ball->radius * sin(theta);
+	}
+}
+
+void updateBallVertexCoordinates(double dx, double dy)
+{
+
+}
 
 void nextFrame(Ball* ball, Step** steps, GLuint* VBO)
 {
@@ -32,7 +61,7 @@ void nextFrame(Ball* ball, Step** steps, GLuint* VBO)
 		steps[i]->position[1] += 0.01 * steps[i]->velocity[1];
 		if (steps[i]->position[1] > 1) {
 			steps[i]->position[1] -= 2;
-			steps[i]->position[0] *= -1;
+			steps[i]->position[0] = -0.8 + ((double)rand() / RAND_MAX) * 1.6;
 		}
 		for (int v = 0; v < 4; v++)
 		{
@@ -41,8 +70,19 @@ void nextFrame(Ball* ball, Step** steps, GLuint* VBO)
 		}
 	}
 
+
+	ball->velocity[1] = getBallVerticalVelocity(ball, steps);
+
+	ball->position[1] += ball->velocity[1] * 0.01;
+	if (ball->position[1] > 1) ball->position[1] -= 2;
+	else if (ball->position[1] < -1) ball->position[1] += 2;
+
 	glBindBuffer(GL_ARRAY_BUFFER, VBO[0]);
-	glBufferSubData(GL_ARRAY_BUFFER, 8, 16, &(ball->position[0]));
+	for (int i = 0; i < 25; i++)
+	{
+		initializeBallVertexCoordinates(i * 7, ball);
+		glBufferSubData(GL_ARRAY_BUFFER, 8 * (i * 7 + 1), 16, &(ballVertexData[i * 7 + 1]));
+	}
 }
 
 void initializeStepVertex(int vertexIndex, int stepIndex, Step* step)
@@ -75,16 +115,24 @@ void drawSteps(GLuint elementBuffer, GLuint vao)
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 }
 
+
+void initializeBallVertices(int index, Ball* ball)
+{
+	ballVertexData[index] = 0;
+	ballVertexData[index + 3] = ball->color.getColorChannels()[0];
+	ballVertexData[index + 4] = ball->color.getColorChannels()[1];
+	ballVertexData[index + 5] = ball->color.getColorChannels()[2];
+	ballVertexData[index + 6] = ball->color.getColorChannels()[3];
+
+	initializeBallVertexCoordinates(index, ball);
+}
+
 void Game::configureVAOandVBOs()
 {
 	// initialize the ball vertex data
-	ballVertexData[0] = 0;
-	ballVertexData[1] = this->ball->position[0];
-	ballVertexData[2] = this->ball->position[1];
-	ballVertexData[3] = this->ball->color.getColorChannels()[0];
-	ballVertexData[4] = this->ball->color.getColorChannels()[1];
-	ballVertexData[5] = this->ball->color.getColorChannels()[2];
-	ballVertexData[6] = this->ball->color.getColorChannels()[3];
+
+
+	for (int i = 0; i < 25; i++) initializeBallVertices(i * 7, this->ball);
 
 	// initialize the steps vertex data
 	for (int i = 0; i < 6; i++) initializeStepVertices(i, this->steps);
@@ -92,7 +140,7 @@ void Game::configureVAOandVBOs()
 	// VAO & VBO for ball
 	glBindVertexArray(this->VAO[0]);
 	glBindBuffer(GL_ARRAY_BUFFER, this->VBO[0]);
-	glBufferData(GL_ARRAY_BUFFER, 56, ballVertexData, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 7 * 8 * 25, ballVertexData, GL_DYNAMIC_DRAW);
 
 	glVertexAttribPointer(0, 1, GL_DOUBLE, GL_FALSE, 7 * 8, (void*)0); // Ball / Step indicator
 	glVertexAttribPointer(1, 2, GL_DOUBLE, GL_FALSE, 7 * 8, (void*)8); // Position attributes
@@ -110,21 +158,11 @@ void Game::configureVAOandVBOs()
 
 void Game::init(GLFWwindow* window)
 {
-	unsigned int nObjects = 2;
-	// First create VAOs, which contain everything vertex related. (VBO, EBO, data etc.)
-	this->VAO = new GLuint[nObjects];
 	glGenVertexArrays(nObjects, this->VAO);
-
-	// VBOs: To bring data from CPU to GPU, create 2 VBOs
-	this->VBO = new GLuint[nObjects];
 	glGenBuffers(nObjects, this->VBO);
-
 
 	// Configure vertices of the objects
 	this->configureVAOandVBOs();
-	for (int i = 0; i < 4 * 6 * 7; i++) {
-		std::cout << i / 7 << ": " << stepsVertexData[i] << std::endl;
-	}
 
 	// EBO: To denote vertex indices and avoid duplication of vertices
 	GLuint indices[] = {
@@ -139,7 +177,7 @@ void Game::init(GLFWwindow* window)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBuffer);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 	glClearColor(5.0/256, 205.0/256, 227.0f/256, 1.0f);
-	glPointSize(20);
+	glPointSize(40);
 
 	while (!glfwWindowShouldClose(window)) {
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -167,14 +205,4 @@ void Game::moveBallLeft(double distance)
 void Game::moveBallRight(double distance)
 {
 	this->ball->moveRight(distance);
-}
-
-void Game::moveBallUp(double distance)
-{
-	this->ball->moveUp(distance);
-}
-
-void Game::moveBallDown(double distance)
-{
-	this->ball->moveDown(distance);
 }

@@ -16,11 +16,11 @@ public:
         this->position[1] = centerY;
         this->width = lengthX;
         this->velocity[0] = 0;
-        this->velocity[1] = 0.1;
+        this->velocity[1] = 0.05;
         this->height = lengthY;
         this->color = Color(BLUE);
     }
-    bool touches(double, double);
+    bool touches(double, double, double);
     void draw(unsigned int);
 };
 
