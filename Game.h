@@ -40,6 +40,5 @@ public:
 	void configureVAOandVBOs();
 	void init(GLFWwindow* window);
 	void terminate();
-	void moveBallLeft(double);
-	void moveBallRight(double);
+	void setBallHorizontalVelocity(int action);
 };

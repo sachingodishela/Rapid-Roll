@@ -20,13 +20,12 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		}
 		glPolygonMode(GL_FRONT_AND_BACK, newMode);
 	}
-	double increment = action * 0.02;
 	if (key == GLFW_KEY_LEFT) {
-		game->moveBallLeft(increment);
+		game->setBallHorizontalVelocity(-action - 1);
 	}
 
 	if (key == GLFW_KEY_RIGHT) {
-		game->moveBallRight(increment);
+		game->setBallHorizontalVelocity(action + 1);
 	}
 }
 int main()

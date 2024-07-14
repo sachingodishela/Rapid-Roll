@@ -21,6 +21,15 @@ void Ball::moveRight(double distance = 0.5)
 	if (this->position[0] > 1) this->position[0] -= 2;
 }
 
+void Ball::updateXPositionForNextFrame()
+{
+	if (this->velocity[0]) {
+		this->position[0] += this->velocity[0] * 0.01;
+	}
+	if (this->position[0] >= 1 - this->radius) this->position[0] = 1 - this->radius;
+	else if (this->position[0] < -1 + this->radius) this->position[0] = -1 + this->radius;
+}
+
 bool Ball::touches(double X, double Y)
 {
 	return true;

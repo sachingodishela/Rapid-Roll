@@ -4,3 +4,4 @@ RUN apt install libglew-dev -y
 RUN apt install libglfw3-dev -y
 RUN apt install git -y
 RUN apt install g++ -y
+RUN apt install gdb -y

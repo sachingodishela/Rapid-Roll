@@ -2,10 +2,19 @@
 
 bool Step::touches(double X, double Y, double radius)
 {
-	return this->position[1] - this->height / 2 <= Y and
-		this->position[1] + this->height / 2 >= Y - radius and
-		this->position[0] - this->width / 2 <= X and
-		this->position[0] + this->width / 2 >= X;
+	if(
+	(this->position[0] - (this->width / 2) < X)
+	&&
+	(this->position[0] + (this->width / 2) > X)
+	&&
+	(this->position[1] + (this->height / 2) - Y + radius > -0.008)
+	&&
+	(this->position[1] + (this->height / 2) - Y + radius < 0.008)
+	)
+	{
+		return true;
+	}
+	return false;
 }
 
 void Step::draw(unsigned int vao)

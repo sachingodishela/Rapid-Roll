@@ -7,14 +7,33 @@
 double* ballVertexData = new double[7 * (1 + 24)];
 double* stepsVertexData = new double[7 * 4 * 6];
 
-double getBallVerticalVelocity(Ball* ball, Step** steps)
+void updateBallVerticalMeasurements(Ball* ball, Step** steps)
 {
+	ball->velocity[1] = ball->velocity[1] + ball->acceleration[1] * 0.01;
+	ball->position[1] += ball->velocity[1] * 0.01;
 	for (int i = 0; i < 6; i++)
 	{
-		if (steps[i]->touches(ball->position[0], ball->position[1], ball->radius)) return steps[i]->velocity[1];
+		if (steps[i]->touches(ball->position[0], ball->position[1], ball->radius)) {
+			std::cout << "touches = true" << std::endl;
+			ball->velocity[1] = steps[i]->velocity[1];
+			ball->position[1] = steps[i]->position[1] + (steps[i]->height / 2) + ball->radius;
+			ball->acceleration[1] = 0;
+			return;
+		}
 	}
-	if (ball->velocity[1] > 0) ball->velocity[1] = -1;
-	return ball->velocity[1] + ball->acceleration[1] * 0.01;
+	ball->velocity[1] = -1;
+	ball->acceleration[1] = -0.9;
+}
+
+double getBallHorizontalVelocity(Ball* ball) {
+	if (!ball->velocity[0]) return 0;
+	double prevVelocity = ball->velocity[0];
+	double newBallVelocity =  ball->velocity[0] + ball->acceleration[0] * 0.02;
+	if (newBallVelocity * prevVelocity < 0) {
+		return 0;
+	} else {
+		return newBallVelocity;
+	}
 }
 
 void updateStepVertexPositions(int vertexIndex, int startIndexInBuffer, Step* step)
@@ -64,7 +83,7 @@ void nextFrame(Ball* ball, Step** steps, GLuint* VBO)
 		steps[i]->position[1] += 0.01 * steps[i]->velocity[1];
 		if (steps[i]->position[1] > 1) {
 			steps[i]->position[1] -= 2;
-			steps[i]->position[0] = -0.8 + ((double)rand() / RAND_MAX) * 1.6;
+			steps[i]->position[0] = -1 + (2 * (double)rand() / RAND_MAX);
 		}
 		for (int v = 0; v < 4; v++)
 		{
@@ -73,10 +92,10 @@ void nextFrame(Ball* ball, Step** steps, GLuint* VBO)
 		}
 	}
 
-
-	ball->velocity[1] = getBallVerticalVelocity(ball, steps);
-
-	ball->position[1] += ball->velocity[1] * 0.01;
+	updateBallVerticalMeasurements(ball, steps);
+	ball->velocity[0] = getBallHorizontalVelocity(ball);
+	// std::cout << "Ball velocity: " << ball->velocity[0] << std::endl;
+	ball->updateXPositionForNextFrame();
 	if (ball->position[1] > 1) ball->position[1] -= 2;
 	else if (ball->position[1] < -1) ball->position[1] += 2;
 
@@ -209,12 +228,15 @@ void Game::terminate()
 	glDeleteProgram(this->shader->id);
 }
 
-void Game::moveBallLeft(double distance)
-{
-	this->ball->moveLeft(distance);
-}
-
-void Game::moveBallRight(double distance)
-{
-	this->ball->moveRight(distance);
+void Game::setBallHorizontalVelocity(int action) {
+	if (action == -1 || action == 1) {
+		// key release
+		// set very high deceleration
+		this->ball->acceleration[0] = 5 * -action;
+	} else if (action == 2 || action == -2){
+		// key press or long press
+		// set moderate acceleration
+		this->ball->velocity[0] = action / 2;
+		this->ball->acceleration[0] = action > 0 ? 3 : - 3;
+	}
 }

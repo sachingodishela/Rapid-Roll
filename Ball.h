@@ -25,5 +25,6 @@ public:
 	bool touches(double, double);
 	void moveLeft(double);
 	void moveRight(double);
+	void updateXPositionForNextFrame();
 };
 
