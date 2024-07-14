@@ -4,7 +4,7 @@
         "dockerfile": "Dockerfile"
     },
     "containerEnv": {
-        "DISPLAY": "${localEnv:DISPLAY}",
+        "DISPLAY": "${localEnv:DISPLAY}"
     },
     "remoteEnv": {
         "DOCKER_BUILDKIT": "0"
@@ -20,5 +20,6 @@
             ]
         }
     },
-    "postStartCommand": "git config --global --add safe.directory ${containerWorkspaceFolder}"
+    "postStartCommand": "git config --global --add safe.directory ${containerWorkspaceFolder}",
+    "postAttachCommand": "g++ Main.cpp Game.cpp Color.cpp Ball.cpp Step.cpp Shader.cpp PhysicalObject.cpp -g -o Main.elf -lglfw -lGLEW -lGL && ./Main.elf"
 }

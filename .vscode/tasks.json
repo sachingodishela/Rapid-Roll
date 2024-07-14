@@ -17,9 +17,7 @@
                 "Main.elf",
                 "-lglfw",
                 "-lGLEW",
-                "-lGL",
-                "-ldl",
-                "-lm"
+                "-lGL"
             ],
             "command": "g++"
         },
