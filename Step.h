@@ -1,6 +1,6 @@
 #pragma once
 #include "PhysicalObject.h"
-#include <glad/glad.h>
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include "Color.h"
 
@@ -16,7 +16,7 @@ public:
         this->position[1] = centerY;
         this->width = lengthX;
         this->velocity[0] = 0;
-        this->velocity[1] = 0.05;
+        this->velocity[1] = 0.5;
         this->height = lengthY;
         this->color = Color(BLUE);
     }

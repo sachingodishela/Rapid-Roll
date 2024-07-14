@@ -1,5 +1,7 @@
 #include "Game.h"
-#include <algorithm>
+#include <cmath>
+#include <iostream>
+#include <chrono>
 #define PI 3.141
 
 double* ballVertexData = new double[7 * (1 + 24)];
@@ -11,7 +13,8 @@ double getBallVerticalVelocity(Ball* ball, Step** steps)
 	{
 		if (steps[i]->touches(ball->position[0], ball->position[1], ball->radius)) return steps[i]->velocity[1];
 	}
-	return -0.05;
+	if (ball->velocity[1] > 0) ball->velocity[1] = -1;
+	return ball->velocity[1] + ball->acceleration[1] * 0.01;
 }
 
 void updateStepVertexPositions(int vertexIndex, int startIndexInBuffer, Step* step)
@@ -179,6 +182,8 @@ void Game::init(GLFWwindow* window)
 	glClearColor(5.0/256, 205.0/256, 227.0f/256, 1.0f);
 	glPointSize(40);
 
+	int frames = 0;
+	auto lastTime = std::chrono::high_resolution_clock::now();
 	while (!glfwWindowShouldClose(window)) {
 		glClear(GL_COLOR_BUFFER_BIT);
 		this->ball->draw(VAO[0]);
@@ -186,6 +191,13 @@ void Game::init(GLFWwindow* window)
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 		nextFrame(this->ball, this->steps, VBO);
+		frames++;
+		auto currentTime = std::chrono::high_resolution_clock::now();
+		if (std::chrono::duration_cast<std::chrono::seconds>(currentTime - lastTime).count() >= 1) {
+			std::cout << "FPS: " << frames << std::endl;
+			frames = 0;
+			lastTime = currentTime;
+		}
 	}
 }
 

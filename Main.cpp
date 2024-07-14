@@ -42,9 +42,11 @@ int main()
 		return -1;
 	}
 	glfwMakeContextCurrent(window);
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-		std::cout << "OpenGL Library Loading Failed..." << std::endl;
-		return 0;
+	GLenum err=glewInit();
+	if(err!=GLEW_OK) {
+		// Problem: glewInit failed, something is seriously wrong.
+		std::cout << "glewInit failed: " << glewGetErrorString(err) << std::endl;
+		exit(1);
 	}
 	glViewport(0, 0, 400, 600);
 	glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);

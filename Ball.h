@@ -1,5 +1,5 @@
 #pragma once
-#include <glad/glad.h>
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include "Color.h"
 #include "PhysicalObject.h"
@@ -15,9 +15,9 @@ public:
 		this->position[0] = 0.0;
 		this->position[1] = 0.0;
 		this->velocity[0] = 0.0;
-		this->velocity[1] = -0.05;
+		this->velocity[1] = -1;
 		this->acceleration[0] = 0.0;
-		this->acceleration[1] = 0.0;
+		this->acceleration[1] = -0.9;
 		this->radius = radius;
 		this->color = Color(ballColor);
 	}

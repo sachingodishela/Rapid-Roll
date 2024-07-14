@@ -1,0 +1,39 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build Game",
+            "type": "shell",
+            "args": [
+                "Main.cpp",
+                "Game.cpp",
+                "Color.cpp",
+                "Ball.cpp",
+                "Step.cpp",
+                "Shader.cpp",
+                "PhysicalObject.cpp",
+                "-g",
+                "-o",
+                "Main.elf",
+                "-lglfw",
+                "-lGLEW",
+                "-lGL",
+                "-ldl",
+                "-lm"
+            ],
+            "command": "g++"
+        },
+        {
+            "label": "Run Game",
+            "type": "shell",
+            "command": "./Main.elf",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "dependsOn": [
+                "Build Game"
+            ]
+        }
+    ]
+}
