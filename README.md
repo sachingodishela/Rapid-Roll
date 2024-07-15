@@ -3,7 +3,15 @@ This a 2 dimensional arcade game. The goal is to juggle the ball between steps (
 #### Libraries Used:
 1. GLFW for windowing
 2. GLEW for accessing OpenGL
-
+#### Development Roadmap:
+|Feature|Start Date|End Date|
+|-|-|-|
+|Side Boundaries|||
+|Thorns at the top|||
+|Scoreboard|||
+|Lives|||
+|Sound FX|||
+|Increasing velocities over time|||
 ## Setup Instructions:
 1. Install [Docker Engine](https://docs.docker.com/engine/install/ubuntu/)
 2. Install [VS Code](https://code.visualstudio.com/download). After that install the [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension
