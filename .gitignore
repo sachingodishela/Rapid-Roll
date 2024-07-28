@@ -1,1 +1,6 @@
 *.elf
+vcpkg_installed
+out
+.vs
+.vscode
+build

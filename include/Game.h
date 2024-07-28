@@ -33,7 +33,7 @@ public:
 		for (int i = 0; i < 6; i++) this->steps[i] = new Step(-0.8 + ((double)rand() / RAND_MAX) * 1.6, -0.6 + (i / 6.0) * 2, 0.4, 0.04);
 		this->VAO = new GLuint[nObjects];
 		this->VBO = new GLuint[nObjects];
-		this->shader = new Shader("vertexShader.glsl", "fragmentShader.glsl");
+		this->shader = new Shader("../shaders/vertexShader.glsl", "../shaders/fragmentShader.glsl");
 		shader->use();
 	}
 

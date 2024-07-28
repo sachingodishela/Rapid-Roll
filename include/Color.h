@@ -1,5 +1,5 @@
 #pragma once
-
+#include<iso646.h>
 enum colors
 {
 	WHITE, RED, BLUE, GREEN, YELLOW, BLACK
