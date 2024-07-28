@@ -4,27 +4,12 @@
         {
             "label": "Build Game",
             "type": "shell",
-            "args": [
-                "Main.cpp",
-                "Game.cpp",
-                "Color.cpp",
-                "Ball.cpp",
-                "Step.cpp",
-                "Shader.cpp",
-                "PhysicalObject.cpp",
-                "-g",
-                "-o",
-                "Main.elf",
-                "-lglfw",
-                "-lGLEW",
-                "-lGL"
-            ],
-            "command": "g++"
+            "command": "cmake --preset linux-config && cmake --build --preset=linux-build"
         },
         {
             "label": "Run Game",
             "type": "shell",
-            "command": "./Main.elf",
+            "command": "build/Rapid-Roll",
             "group": {
                 "kind": "build",
                 "isDefault": true
