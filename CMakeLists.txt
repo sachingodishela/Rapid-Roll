@@ -3,10 +3,8 @@ project(Rapid-Roll)
 include_directories(${CMAKE_SOURCE_DIR}/include)
 set(CMAKE_CXX_STANDARD 11)
 file(GLOB SOURCES ${CMAKE_SOURCE_DIR}/src/*.cpp)
-find_package(glew REQUIRED)
+find_package(GLEW REQUIRED)
 find_package(glfw3 REQUIRED)
-find_package(opengl REQUIRED)
-
+find_package(OpenGL REQUIRED)
 add_executable(Rapid-Roll ${SOURCES})
-target_link_libraries(Rapid-Roll GLEW::glew glfw opengl32)
-
+target_link_libraries(Rapid-Roll glfw GLEW::GLEW OpenGL::GL)

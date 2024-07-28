@@ -1,8 +1,8 @@
 {
-  "version": 2,
+  "version": 3,
   "configurePresets": [
     {
-      "name": "default",
+      "name": "Windows-Config",
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/build",
       "cacheVariables": {
@@ -15,6 +15,42 @@
         "microsoft.com/VisualStudioSettings/CMake/1.0": {
           "hostOS": "Windows"
         }
+      }
+    },
+    {
+      "name": "linux-config",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build",
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": {
+          "value": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+          "type": "FILEPATH"
+        }
+      },
+      "vendor": {
+        "microsoft.com/VisualStudioSettings/CMake/1.0": {
+          "hostOS": "Linux"
+        }
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "Windows-Build",
+      "configurePreset": "Windows-Config",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "linux-build",
+      "configurePreset": "linux-config",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
       }
     }
   ]

@@ -1,4 +1,4 @@
-#version 430 core
+#version 420 core
 layout (location = 0) in double type;
 layout (location = 1) in vec2 position;
 layout (location = 2) in vec4 color;

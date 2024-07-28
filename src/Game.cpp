@@ -14,7 +14,7 @@ void updateBallVerticalMeasurements(Ball* ball, Step** steps)
 	for (int i = 0; i < 6; i++)
 	{
 		if (steps[i]->touches(ball->position[0], ball->position[1], ball->radius)) {
-			std::cout << "touches = true" << std::endl;
+			//std::cout << "touches = true" << std::endl;
 			ball->velocity[1] = steps[i]->velocity[1];
 			ball->position[1] = steps[i]->position[1] + (steps[i]->height / 2) + ball->radius;
 			ball->acceleration[1] = 0;
