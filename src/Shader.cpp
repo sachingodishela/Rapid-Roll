@@ -5,6 +5,8 @@ void Shader::use() {
 	glUseProgram(this->id);
 }
 
+Shader::Shader(std::string vertexShaderFilePath, std::string fragmentShaderFilePath) : Shader(vertexShaderFilePath.c_str(), fragmentShaderFilePath.c_str()) {}
+
 Shader::Shader(const char* vertexShaderFilePath, const char* fragmentShaderFilePath) {
 	std::ifstream ifs(vertexShaderFilePath);
 	std::string vertexShaderSource((std::istreambuf_iterator<char>(ifs)), (std::istreambuf_iterator<char>()));
