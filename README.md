@@ -1,5 +1,5 @@
 # Rapid-Roll
-This a cross-platform 2 dimensional arcade game. The goal is to juggle the ball between steps (for as long as you can) that keep coming from down and move upwards. If the ball touches the top of the screen or fall down in the bottom, you are lost.
+This is a cross-platform 2 dimensional arcade game. The goal is to juggle the ball between steps (for as long as you can) that keep coming from down and move upwards. If the ball touches the top of the screen or falls down to the bottom, you are lost.
 Currently supports only Windows and Linux.
 #### 3rd Party Libraries Used:
 1. GLFW for windowing
